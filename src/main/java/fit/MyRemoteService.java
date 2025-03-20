@@ -1,4 +1,4 @@
-package FIT;
+package fit;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 

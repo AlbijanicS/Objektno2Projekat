@@ -1,4 +1,4 @@
-package FIT;
+package fit;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package FIT;
+package fit;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

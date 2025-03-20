@@ -1,20 +1,47 @@
 package model;
 
 import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.SequenceGenerator;
 
+@Entity
 public class MenuItem {
-    private int id;
+   
+	@Id
+	@SequenceGenerator(name = "menuItem_sequence",sequenceName = "menuItem_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menuItem_sequence")
+	private long id;
     private String name;
     private String description;
     private double price;
-    private List<Order> orders; // Many-to-Many veza sa Order
+    
+    @ManyToMany
+    private List<RestaurantOrder> orders; // Many-to-Many veza sa Order
 
-    // Getters and Setters
-    public int getId() {
+   
+    
+    
+    public MenuItem() {
+		super();
+	}
+
+	public MenuItem(long id, String name, String description, double price) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+	}
+
+	public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -42,11 +69,11 @@ public class MenuItem {
         this.price = price;
     }
 
-    public List<Order> getOrders() {
+    public List<RestaurantOrder> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<RestaurantOrder> orders) {
         this.orders = orders;
     }
 }
