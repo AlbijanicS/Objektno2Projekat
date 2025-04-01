@@ -8,15 +8,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.SequenceGenerator;
 
+@NamedQuery(name = RestaurantOrder.GET_ORDERS_FOR_WAITER, 
+query = "SELECT o FROM RestaurantOrder o WHERE o.waiter.id = :waiterId")
 @Entity
 public class RestaurantOrder {
+public static final String GET_ORDERS_FOR_WAITER = "RestaurantOrder.getOrdersForWaiter";
     
-	@Id
-	@SequenceGenerator(name = "order_sequence",sequenceName = "order_sequence", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
-	private Long id;
+    @Id
+    @SequenceGenerator(name = "order_sequence", sequenceName = "order_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
+    private Long id;
     private String status; 
     
     @ManyToMany
@@ -28,22 +32,20 @@ public class RestaurantOrder {
     @ManyToOne
     private Waiter waiter;
     
-    
-    
     public RestaurantOrder() {
-		super();
-	}
+        super();
+    }
 
-	public RestaurantOrder(Long id, String status, List<MenuItem> menuItems, RestaurantTable table, Waiter waiter) {
-		super();
-		this.id = id;
-		this.status = status;
-		this.menuItems = menuItems;
-		this.table = table;
-		this.waiter = waiter;
-	}
+    public RestaurantOrder(Long id, String status, List<MenuItem> menuItems, RestaurantTable table, Waiter waiter) {
+        super();
+        this.id = id;
+        this.status = status;
+        this.menuItems = menuItems;
+        this.table = table;
+        this.waiter = waiter;
+    }
 
-	public Waiter getWaiter() {
+    public Waiter getWaiter() {
         return waiter;
     }
 
@@ -81,5 +83,60 @@ public class RestaurantOrder {
 
     public void setTable(RestaurantTable table) {
         this.table = table;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((status == null) ? 0 : status.hashCode());
+        result = prime * result + ((table == null) ? 0 : table.hashCode());
+        result = prime * result + ((waiter == null) ? 0 : waiter.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        RestaurantOrder other = (RestaurantOrder) obj;
+        
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+            
+        if (status == null) {
+            if (other.status != null)
+                return false;
+        } else if (!status.equals(other.status))
+            return false;
+            
+        if (table == null) {
+            if (other.table != null)
+                return false;
+        } else if (!table.equals(other.table))
+            return false;
+            
+        if (waiter == null) {
+            if (other.waiter != null)
+                return false;
+        } else if (!waiter.equals(other.waiter))
+            return false;
+            
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "RestaurantOrder [id=" + id + ", status=" + status + 
+               ", table=" + (table != null ? table.getId() : "null") + 
+               ", waiter=" + (waiter != null ? waiter.getId() : "null") + "]";
     }
 }
