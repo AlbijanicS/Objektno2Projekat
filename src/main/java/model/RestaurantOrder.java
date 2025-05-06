@@ -2,14 +2,17 @@ package model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.JoinColumn;
 
 @NamedQuery(name = RestaurantOrder.GET_ORDERS_FOR_WAITER, 
 query = "SELECT o FROM RestaurantOrder o WHERE o.waiter.id = :waiterId")
@@ -23,11 +26,14 @@ public static final String GET_ORDERS_FOR_WAITER = "RestaurantOrder.getOrdersFor
     private Long id;
     private String status; 
     
-    @ManyToMany
-    private List<MenuItem> menuItems; // Many-to-Many veza sa MenuItem
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "order_menuitem",
+               joinColumns = @JoinColumn(name = "order_id"),
+               inverseJoinColumns = @JoinColumn(name = "menuitem_id"))
+    private List<MenuItem> menuItems;
     
     @ManyToOne
-    private RestaurantTable table; // Many-to-One veza sa Table
+    private RestaurantTable table;
     
     @ManyToOne
     private Waiter waiter;

@@ -1,5 +1,5 @@
 package model;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,31 +12,28 @@ import jakarta.persistence.SequenceGenerator;
 public class MenuItem {
    
 	@Id
-	@SequenceGenerator(name = "menuItem_sequence",sequenceName = "menuItem_sequence", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menuItem_sequence")
-	private long id;
+    @SequenceGenerator(name = "menuItem_sequence", sequenceName = "menuItem_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menuItem_sequence")
+    private long id;
     private String name;
     private String description;
     private double price;
     
-    @ManyToMany
-    private List<RestaurantOrder> orders; // Many-to-Many veza sa Order
-
-   
-    
+    @ManyToMany(mappedBy = "menuItems")
+    @JsonIgnore
+    private List<RestaurantOrder> orders;
     
     public MenuItem() {
-		super();
-	}
+        super();
+    }
 
-	public MenuItem(long id, String name, String description, double price) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
-	}
-
+    public MenuItem(long id, String name, String description, double price) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
 	public long getId() {
         return id;
     }
